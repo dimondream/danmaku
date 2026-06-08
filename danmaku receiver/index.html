@@ -18,11 +18,16 @@
     
     const socket = new WebSocket('ws://localhost:8080');
     
-
-    
     function inputCollect(){
       const inputData = document.getElementById("message").value;
-      socket.send(inputData);    
+      const messageJson = {
+        type: 'danmaku',
+        text: inputData,
+        size: 'medium',         // 之後可以給 user 選
+        color: 'white'          // 之後可以給 user 選
+      }
+
+      socket.send(JSON.stringify(messageJson));    
     }
     
     socket.addEventListener('open',()=>{
@@ -31,6 +36,8 @@
       }
     )
     socket.addEventListener('message',(event)=>{
+
+      
         console.log(event.data);
       })
     socket.addEventListener('close', () => {  });
