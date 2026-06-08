@@ -1,0 +1,35 @@
+body {
+  background: transparent;
+}
+:root{
+  --lane-height:50px;
+  --font-small: 18px;
+  --font-medium:24px;
+  --font-large: 32px;
+}
+
+@keyframes flyLeft {
+  from {
+    transform: translateX(100vw);    /* 從螢幕右邊 1 個 viewport 寬之外開始 */
+  }
+  to {
+    transform: translateX(-100%);    /* 飛到自己寬度之外的左邊 */
+  }
+}
+.danmaku {
+  position: absolute;
+  white-space: nowrap;           /* 文字不換行,彈幕一行飛完 */
+  animation: flyLeft 8s linear;  /* 動畫名稱、時間、速度曲線 */
+}
+.danmaku.small  { font-size: var(--font-small);  }
+.danmaku.medium { font-size: var(--font-medium); }
+.danmaku.large  { font-size: var(--font-large);  }
+
+#message p {
+  color: white;
+  font-weight: bold;
+  font-family: "Microsoft JhengHei", "PingFang TC", sans-serif;
+  -webkit-text-stroke: 1px black;
+  text-shadow: 0 0 4px rgba(0, 0, 0, 0.8);
+  margin: 4px 0;
+}

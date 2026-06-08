@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Danmaku Sender</title>
+</head>
+<body>
+  <input type="text" id="message" name="message">
+
+
+
+  <button onclick="inputCollect()">send message
+
+    
+  </button>
+
+  <script>
+
+    
+    const socket = new WebSocket('ws://localhost:8080');
+    
+
+    
+    function inputCollect(){
+      const inputData = document.getElementById("message").value;
+      socket.send(inputData);    
+    }
+    
+    socket.addEventListener('open',()=>{
+      console.log(`connection established`);
+      
+      }
+    )
+    socket.addEventListener('message',(event)=>{
+        console.log(event.data);
+      })
+    socket.addEventListener('close', () => {  });
+    socket.addEventListener('error', (err) => { err });
+  </script>
+</body>
+</html>
