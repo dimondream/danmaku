@@ -45,7 +45,7 @@ M11: LAN 連線 🟢(0.5 天)
 從手機輸入 http://<LAN IP>:8080 測試連線
 驗收:手機發訊息,電腦 Electron 視窗即時看到
 
-M12: QR Code 體驗 🟢(0.5 天)
+M12: QR Code 體驗 ✅(已完成)
 
 寫一個 admin.html 頁面,server 也 serve 它
 動態抓 server LAN IP(可能需要 Node 端讀網卡 IP 再注入 HTML)

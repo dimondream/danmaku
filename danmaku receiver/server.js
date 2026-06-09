@@ -2,13 +2,36 @@ const WebSocket = require('ws');
 
 const http = require('http');
 const fs = require('fs');
+const os = require('os');
+function getIp(){
+    const nets = os.networkInterfaces();
+    for (const net in nets){
+        for(const name of nets[net]){
+            if ( name.family=="IPv4"&&name.internal==false ) {
+                  return name.address;
+              }
+        }
+    }
+    return "127.0.0.1";
+
+}
+console.log( getIp());
+const LAN_IP= getIp();
 
 const server = http.createServer((req, res) => {
+     
     if(req.url=="/"){
         res.writeHead(200,{'Content-Type':'text/html'});
         res.write(fs.readFileSync('index.html'));
         res.end();
-    }else{
+    }else if(req.url=="/admin"){
+        res.writeHead(200,{'Content-Type':'text/html'});
+        let html = fs.readFileSync('admin.html').toString();
+        html = html.replace("__LAN_IP__",LAN_IP);
+        res.write(html);
+        res.end();
+    }
+    else{
         res.writeHead(404, { 'Content-Type': 'text/plain' });
         res.end('Invalid Request!');
     }
@@ -18,7 +41,7 @@ const server = http.createServer((req, res) => {
     // 設好 Content-Type，找不到就回 404
 });
 server.listen(8080, () => {
-    console.log('...running on http://localhost:8080');
+    console.log(`...running on http://${LAN_IP}:8080`);
   });
 const wss= new WebSocket.Server({server});
 
