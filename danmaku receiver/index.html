@@ -4,22 +4,31 @@
   <title>Danmaku Sender</title>
 </head>
 <body>
+  <form id="sendForm">
   <input type="text" id="message" name="message">
 
 
 
-  <button onclick="inputCollect()">send message
+  <button>send message
 
     
   </button>
-
+</form>
   <script>
-
+    const form = document.getElementById("sendForm");
+    form.addEventListener('submit', function(event) {
+    // 1. Stop the browser from reloading the page
+    event.preventDefault();
+    inputCollect();
+    // 2. Custom logic (e.g., read inputs, send AJAX/Fetch request)
+    console.log("Form submission intercepted!");
+  });
     
-    const socket = new WebSocket('ws://localhost:8080');
+    const socket = new WebSocket(`ws://${window.location.host}`);
     
     function inputCollect(){
       const inputData = document.getElementById("message").value;
+      document.getElementById("message").value =''
       const messageJson = {
         type: 'danmaku',
         text: inputData,

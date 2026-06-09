@@ -1,9 +1,27 @@
 const WebSocket = require('ws');
 
+const http = require('http');
+const fs = require('fs');
 
+const server = http.createServer((req, res) => {
+    if(req.url=="/"){
+        res.writeHead(200,{'Content-Type':'text/html'});
+        res.write(fs.readFileSync('index.html'));
+        res.end();
+    }else{
+        res.writeHead(404, { 'Content-Type': 'text/plain' });
+        res.end('Invalid Request!');
+    }
+    
+    // req.url 是什麼？('/'、'/sender.html'…)
+    // 讀對應的檔，res.end(檔案內容) 吐回去
+    // 設好 Content-Type，找不到就回 404
+});
+server.listen(8080, () => {
+    console.log('...running on http://localhost:8080');
+  });
+const wss= new WebSocket.Server({server});
 
-const wss= new WebSocket.Server({port:8080});
-console.log('WebSocket server is running on ws://localhost:8080');
 const clients = new Set(); 
 
 const interval = setInterval(() => {
