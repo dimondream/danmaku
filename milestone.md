@@ -11,13 +11,13 @@ M6: 彈幕從右往左飛(CSS animation + cleanup)
 M7: Lane allocation 演算法(分軌道飛)
 
 Phase 1: 把現有東西收尾、能 demo
-M8: 體驗收尾 🟢(0.5 天)
+M8: 體驗收尾 ✅(已完成)
 
 加 globalShortcut (Ctrl+Shift+Q quit、可選的 toggle 穿透 Ctrl+Shift+M)
 加 skipTaskbar: true、minimizable: false、focusable: false
 寫 README,包含截圖跟基本使用說明
 
-M9: 重連邏輯 + 心跳 🟡(1 天)
+M9: 重連邏輯 + 心跳 ✅(已完成)
 
 Renderer 在 'close' 事件後自動重連
 Exponential backoff(1s, 2s, 4s, 8s, max 30s)
@@ -31,14 +31,14 @@ Phase 2: LAN 多裝置(同個 WiFi)
 
 目標:你打開 Electron app,朋友來你家,掏出手機掃 QR code,直接發彈幕到你桌面。
 
-M10: Server 順便 serve HTML 🟢(0.5 天)
+M10: Server 順便 serve HTML ✅(已完成)
 
 Node http.createServer + WebSocketServer 共用同一 port
 Server 同時供應 /sender.html 跟 ws://
 Sender HTML 改 new WebSocket(\ws://${window.location.host}`)`(動態 URL)
 測試:本機瀏覽器開 http://localhost:8080 → 載入 sender、能發訊息
 
-M11: LAN 連線 🟢(0.5 天)
+M11: LAN 連線 ✅(已完成)
 
 設定 Windows Defender 允許 Node.js 接受連線
 找出自己電腦的 LAN IP (ipconfig)
