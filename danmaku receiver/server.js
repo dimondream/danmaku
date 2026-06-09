@@ -19,12 +19,12 @@ console.log( getIp());
 const LAN_IP= getIp();
 
 const server = http.createServer((req, res) => {
-     
-    if(req.url=="/"){
+    const baseUrl = new URL(req.url,'http://'+req.headers.host);
+    if(baseUrl.pathname=="/"){
         res.writeHead(200,{'Content-Type':'text/html'});
         res.write(fs.readFileSync('index.html'));
-        res.end();
-    }else if(req.url=="/admin"){
+        res.end();      
+    }else if(baseUrl.pathname=="/admin"){
         res.writeHead(200,{'Content-Type':'text/html'});
         let html = fs.readFileSync('admin.html').toString();
         html = html.replace("__LAN_IP__",LAN_IP);
@@ -45,7 +45,7 @@ server.listen(8080, () => {
   });
 const wss= new WebSocket.Server({server});
 
-const clients = new Set(); 
+const clients = new Map(); 
 
 const interval = setInterval(() => {
         wss.clients.forEach((ws) => {
@@ -61,8 +61,16 @@ const interval = setInterval(() => {
             
         });
     }, 30000);
-wss.on('connection',(ws)=>{
-    clients.add(ws);
+wss.on('connection',(ws,req)=>{
+
+    const url = new URL(req.url, 'http://'+req.headers.host);
+    const searchParam = url.searchParams;
+    const room = searchParam.get("room")||"landing";
+    if(!clients.has(room)){
+        clients.set(room,new Set());
+    }
+    clients.get(room).add(ws);
+    ws.room=room
     ws.isAlive = true;
     console.log('New client conneceted');
     ws.send(JSON.stringify({ type: 'system', text: 'welcome to the server' }))
@@ -73,15 +81,17 @@ wss.on('connection',(ws)=>{
 
     ws.on('message',(message)=>{
         console.log(`Received: ${message}`);
-        const text = message.toString()
+        const text = message.toString();
+        const roomSet = clients.get(ws.room);
         
-        for (const client of clients){
+        for (const socket of roomSet){
             try{
-                client.send(text);
+                socket.send(text);
             }catch(error){
                 console.log(`error message${error}`)
             }
-
+            
+            
         }
 
         
@@ -91,8 +101,14 @@ wss.on('connection',(ws)=>{
 
 
     ws.on('close',()=>{
+        if(clients.has(room)){
+            clients.get(room).delete(ws);
+            if(clients.get(room).size==0){
+                clients.delete(room);
+            }
+        }
         console.log('client disconnected')
-        clients.delete(ws);
+        
     })
 
 });

@@ -23,8 +23,10 @@
     // 2. Custom logic (e.g., read inputs, send AJAX/Fetch request)
     console.log("Form submission intercepted!");
   });
-    
-    const socket = new WebSocket(`ws://${window.location.host}`);
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const room = urlParams.get('room')||"landing";
+    const socket = new WebSocket(`ws://${window.location.host}/?room=${room}`);
     
     function inputCollect(){
       const inputData = document.getElementById("message").value;

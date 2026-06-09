@@ -58,7 +58,7 @@ Phase 3: 房間概念(多群人)
 
 目標:不同朋友群可以同時用同一台 server,彈幕互不干擾。
 
-M13: 房間架構升級 🔴(1-2 天)
+M13: 房間架構升級 ✅(已完成)
 
 Server 的 state 從 clients: Set 改成 rooms: Map<roomId, Set<client>>
 連線時要決定加入哪個房間(URL query param: ws://...?room=abc123)

@@ -1,4 +1,5 @@
-const socket = new WebSocket('ws://localhost:8080');
+const room = "123"; 
+const socket = new WebSocket(`ws://localhost:8080/?room=${room}`);
 const status = document.getElementById('status');
 const root=document.documentElement;
 const laneHeight=parseInt(getComputedStyle(root).getPropertyValue('--lane-height'),10);
