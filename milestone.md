@@ -67,7 +67,7 @@ Broadcast 範圍從「所有人」改成「同房間」
 Renderer / Sender 都要支援指定房間
 訊息格式可能要從純字串升級成 JSON { type, room, text, sender }
 
-M14: 房間 URL 分享 🟢(0.5 天)
+M14: 房間 URL 分享 ✅(已完成)
 
 隨機產生 6-8 位英數字 room ID
 Sender URL: http://<host>/sender?room=abc123

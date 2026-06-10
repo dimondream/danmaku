@@ -17,19 +17,40 @@ function getIp(){
 }
 console.log( getIp());
 const LAN_IP= getIp();
+function generateRoomId(){
+    const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+    let id = '';
+    let count = 0;
+    // TODO: 跑 6 次迴圈,每次從 chars 隨機抓一個字接到 id
+    //       隨機 index 怎麼算? Math.floor(Math.random() * chars.length)
+    while(count < 6){
+        id+=chars[Math.floor(Math.random() * chars.length)];
+        count++;
+    }
+
+    return id;
+}
+const roomId = generateRoomId();
 
 const server = http.createServer((req, res) => {
     const baseUrl = new URL(req.url,'http://'+req.headers.host);
-    if(baseUrl.pathname=="/"){
+    if(baseUrl.pathname=="/"||baseUrl.pathname=="/sender"){
         res.writeHead(200,{'Content-Type':'text/html'});
         res.write(fs.readFileSync('index.html'));
         res.end();      
     }else if(baseUrl.pathname=="/admin"){
         res.writeHead(200,{'Content-Type':'text/html'});
         let html = fs.readFileSync('admin.html').toString();
-        html = html.replace("__LAN_IP__",LAN_IP);
+        html = html.replace(/__LAN_IP__/g,LAN_IP);
+        html = html.replace(/__roomId__/g, roomId);
         res.write(html);
         res.end();
+    }else if(baseUrl.pathname=="/room"){
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.write(JSON.stringify({ room: roomId }));
+      res.end()
+      // TODO: 把 { room: ROOM_ID } 這個物件轉成 JSON 字串,用 res.end() 吐回去
+      //       物件轉 JSON 字串的函式是哪個?(前面 sender 那邊 socket.send 也用過)
     }
     else{
         res.writeHead(404, { 'Content-Type': 'text/plain' });
@@ -41,7 +62,7 @@ const server = http.createServer((req, res) => {
     // 設好 Content-Type，找不到就回 404
 });
 server.listen(8080, () => {
-    console.log(`...running on http://${LAN_IP}:8080`);
+    console.log(`...running on http://${LAN_IP}:8080/sender?room=${roomId}`);
   });
 const wss= new WebSocket.Server({server});
 
