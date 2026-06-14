@@ -86,7 +86,7 @@ Phase 4: 上雲(跨網路使用)
 
 目標:朋友不在你 WiFi 內也能用。
 
-M16: 雲端部署 🟡(1-2 天)
+M16: 雲端部署 ✅(已完成)
 
 選平台:Railway(最簡單)/ Fly.io / Render
 處理 environment variables(port、CORS 等)
@@ -108,7 +108,7 @@ Phase 5: 公開網頁版本(無 Electron)
 
 目標:不只 Electron 桌面,有人想直接在瀏覽器看也可以(像彈幕網站)。
 
-M18: Web Receiver 🟢(1 天)
+M18: Web Receiver 🟢(1 天)— ⏭️ 下一個要做(先 M18 再 M17)
 
 跟 Electron renderer 共用 99% code(因為 renderer 本來就是個瀏覽器頁面)
 純網頁版本不能透明 / click-through,所以畫面要設計成「全螢幕、深色背景、彈幕飛過」風格
