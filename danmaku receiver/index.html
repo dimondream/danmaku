@@ -26,8 +26,15 @@
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const room = urlParams.get('room')||"landing";
-    const socket = new WebSocket(`ws://${window.location.host}/?room=${room}`);
-    
+    let protocol;
+    if (window.location.protocol === 'https:'){
+      protocol='wss';
+    }else{
+      protocol='ws';
+    }
+    const socket = new WebSocket(`${protocol}://${window.location.host}/?room=${room}`);
+
+
     function inputCollect(){
       const inputData = document.getElementById("message").value;
       document.getElementById("message").value =''

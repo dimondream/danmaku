@@ -3,6 +3,7 @@ const WebSocket = require('ws');
 const http = require('http');
 const fs = require('fs');
 const os = require('os');
+const path = require('path');
 function getIp(){
     const nets = os.networkInterfaces();
     for (const net in nets){
@@ -36,11 +37,11 @@ const server = http.createServer((req, res) => {
     const baseUrl = new URL(req.url,'http://'+req.headers.host);
     if(baseUrl.pathname=="/"||baseUrl.pathname=="/sender"){
         res.writeHead(200,{'Content-Type':'text/html'});
-        res.write(fs.readFileSync('index.html'));
+        res.write(fs.readFileSync(path.join(__dirname, 'index.html')));
         res.end();      
     }else if(baseUrl.pathname=="/admin"){
         res.writeHead(200,{'Content-Type':'text/html'});
-        let html = fs.readFileSync('admin.html').toString();
+        let html = fs.readFileSync(path.join(__dirname, 'admin.html')).toString();
         html = html.replace(/__LAN_IP__/g,LAN_IP);
         html = html.replace(/__roomId__/g, roomId);
         res.write(html);
@@ -61,8 +62,8 @@ const server = http.createServer((req, res) => {
     // 讀對應的檔，res.end(檔案內容) 吐回去
     // 設好 Content-Type，找不到就回 404
 });
-server.listen(8080, () => {
-    console.log(`...running on http://${LAN_IP}:8080/sender?room=${roomId}`);
+server.listen(process.env.PORT||8080, () => {
+    console.log(`...running on http://${LAN_IP}:${process.env.PORT||8080}/sender?room=${roomId}`);
   });
 const wss= new WebSocket.Server({server});
 
